@@ -5,6 +5,7 @@ import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.validator.constraints.Email;
 
 public class Spitter {
 
@@ -23,20 +24,27 @@ public class Spitter {
 	@NotNull
 	@Size(min=5, max=25)
 	private String password;
+	  
+	//This member is needed because if it's not included (org.hibernate.validator) no validator beans would be created and annotations (@NotNull) would do nothing
+	@NotNull
+	@Email
+	private String email;
+
 	
 	private Long id;
 	
 	public Spitter() {}
 	  
-	public Spitter(String firstName, String lastName, String username, String password) {
-		this(null, firstName, lastName, username, password);
+	public Spitter(String firstName, String lastName, String username, String password, String email) {
+		this(null, firstName, lastName, username, password, email);
 	}
 	
-	public Spitter(Long id, String firstName, String lastName, String username, String password) {
+	public Spitter(Long id, String firstName, String lastName, String username, String password, String email) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.username = username;
 		this.password = password;
+		this.email = email;
 		this.id = id;
 	}
 
@@ -80,14 +88,22 @@ public class Spitter {
 		this.password = password;
 	}
 	
-	  @Override
+	  public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	@Override
 	  public boolean equals(Object that) {
-	    return EqualsBuilder.reflectionEquals(this, that, "firstName", "lastName", "username", "password");
+	    return EqualsBuilder.reflectionEquals(this, that, "firstName", "lastName", "username", "password", "email");
 	  }
 	  
 	@Override
 	  public int hashCode() {
-	    return HashCodeBuilder.reflectionHashCode(this, "firstName", "lastName", "username", "password");
+	    return HashCodeBuilder.reflectionHashCode(this, "firstName", "lastName", "username", "password", "email");
 	  }
 
 	

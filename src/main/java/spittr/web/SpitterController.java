@@ -24,12 +24,15 @@ public class SpitterController {
 	}
 	
 	@RequestMapping(value="/register", method=RequestMethod.GET)
-	public String showRegistrationForm() {
+	public String showRegistrationForm(Model model) {
+		model.addAttribute(new Spitter());
 		return "registerForm";
 	}
 
 	@RequestMapping(value="/register", method=RequestMethod.POST)
-	public String processRegistration(@Valid Spitter spitter, Errors errors) {
+	  public String processRegistration(
+		      @Valid Spitter spitter, 
+		      Errors errors) {
 		if (errors.hasErrors()) {
 			return "registerForm";
 		}
