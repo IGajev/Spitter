@@ -8,6 +8,15 @@
   </head>
   <body>
     <div id="content">
+        <div class="spittleForm">
+            <h1>Spit it out...</h1>
+            <form method="POST" name="spittleForm">
+              <input type="hidden" name="latitude" value="42" />
+              <input type="hidden" name="longitude" value="23" />
+              <textarea name="message" cols="80" rows="5"></textarea><br/>
+              <input type="submit" value="Add" />
+            </form>
+        </div>
         <h1>Recent Spittles</h1>
         <ul class="spittleList">
           <li th:each="spittle : ${spittleList}" 

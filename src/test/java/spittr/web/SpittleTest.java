@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
@@ -25,14 +24,17 @@ public class SpittleTest {
 	public void shouldShowRecentSpittles() throws Exception {
 		List<Spittle> expectedSpittles = createSpittleList(20);
 		
-		SpittleRepository mockRepository =
+		SpittleRepository mockSpittleRepository =
 			mock(SpittleRepository.class);
 		
-		when(mockRepository.findSpittles(Long.MAX_VALUE, 20))
+		SpitterRepository mockSpitterRepository = 
+			mock(SpitterRepository.class);
+		
+		when(mockSpittleRepository.findSpittles(Long.MAX_VALUE, 20))
 		.thenReturn(expectedSpittles);
 		
 		SpittleController controller =
-				new SpittleController(mockRepository);
+				new SpittleController(mockSpittleRepository, mockSpitterRepository);
 		
 		MockMvc mockMvc = standaloneSetup(controller)
 				.setSingleView(
@@ -49,7 +51,7 @@ public class SpittleTest {
 	private List<Spittle> createSpittleList(int count) {
 		List<Spittle> spittles = new ArrayList<Spittle>();
 		for (int i=0; i < count; i++) {
-		spittles.add(new Spittle("Spittle " + i, new Date()));
+		spittles.add(new Spittle("Spittle " + i));
 		}
 		return spittles;
 	}
@@ -58,11 +60,16 @@ public class SpittleTest {
 	public void shouldShowPagedSpittles() throws Exception {
 		List<Spittle> expectedSpittles = createSpittleList(50);
 		
-		SpittleRepository mockRepository = mock(SpittleRepository.class);
+		SpittleRepository mockSpittleRepository =
+				mock(SpittleRepository.class);
+			
+			SpitterRepository mockSpitterRepository = 
+				mock(SpitterRepository.class);
+			
 		
-		when(mockRepository.findSpittles(238900, 50)).thenReturn(expectedSpittles);
+		when(mockSpittleRepository.findSpittles(238900, 50)).thenReturn(expectedSpittles);
 		
-		SpittleController spittleController = new SpittleController(mockRepository);
+		SpittleController spittleController = new SpittleController(mockSpittleRepository, mockSpitterRepository);
 		
 		MockMvc mockMvc = standaloneSetup(spittleController)
 				.setSingleView(
@@ -78,13 +85,17 @@ public class SpittleTest {
 	
 	@Test
 	public void testSpittle() throws Exception {
-		Spittle expectedSpittle = new Spittle("Hello", new Date());
+		Spittle expectedSpittle = new Spittle("Hello");
 		
-		SpittleRepository mockRepository = mock(SpittleRepository.class);
+		SpittleRepository mockSpittleRepository =
+				mock(SpittleRepository.class);
+			
+			SpitterRepository mockSpitterRepository = 
+				mock(SpitterRepository.class);
 
-		when(mockRepository.findOne(12345)).thenReturn(expectedSpittle);
+		when(mockSpittleRepository.findOne(12345)).thenReturn(expectedSpittle);
 		
-		SpittleController controller = new SpittleController(mockRepository);
+		SpittleController controller = new SpittleController(mockSpittleRepository, mockSpitterRepository);
 		
 		MockMvc mockMvc = standaloneSetup(controller).build();
 		
