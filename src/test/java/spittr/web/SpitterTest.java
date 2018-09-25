@@ -4,7 +4,6 @@ import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
@@ -16,7 +15,6 @@ import org.junit.Test;
 import org.springframework.test.web.servlet.MockMvc;
 
 import spittr.Spitter;
-import spittr.data.DummySpitterRepository;
 import spittr.data.SpitterRepository;
 
 public class SpitterTest {
@@ -46,26 +44,6 @@ public class SpitterTest {
 		
 		verify(mockRepository, atLeastOnce()).save(unsaved);
 	}
-
-	  @Test
-	  public void shouldProcessRegistrationDummyRepository() throws Exception {
-	    SpitterRepository dummyRepository = new DummySpitterRepository();
-
-	    SpitterController controller = new SpitterController(dummyRepository);
-	    MockMvc mockMvc = standaloneSetup(controller).build();
-
-	    mockMvc.perform(post("/spitter/register")
-	           .param("firstName", "Jack")
-	           .param("lastName", "Bauer")
-	           .param("username", "jbauer")
-	           .param("password", "24hours")
-	           .param("email", "jbauer@email.com"))
-	           .andExpect(redirectedUrl("/spitter/jbauer"));
-
-		mockMvc.perform(get("/spitter/jbauer"))
-		.andExpect(view().name("profile"))
-		.andExpect(model().attributeExists("spitter"));	  
-	  }
 
 	  @Test
 	  public void shouldProcessRegistrationFaultInjection() throws Exception {
