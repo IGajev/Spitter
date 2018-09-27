@@ -24,7 +24,7 @@
             <div class="spittleMessage" th:text="${spittle.message}">Spittle message</div>
             <div>
               <span class="spittleTime" th:text="${spittle.time}">spittle timestamp</span>
-              <span class="spittleLocation" th:text="'{' + ${spittle.latitude} + ', ' + ${spittle.longitude} + ')'">lat, long</span>
+              <span class="spittleLocation" th:text="'(' + ${spittle.latitude} + ', ' + ${spittle.longitude} + ')'">lat, long</span>
             </div>
           </li>
         </ul>
